@@ -1,9 +1,7 @@
 import app from './src/app.js'
 import { sequelize }  from './database/conexion.js' 
 
-import './models/Cliente.js'
-import './models/Juego.js'
-import './models/Reserva.js'
+
 
 const main = async () => {
     try {
