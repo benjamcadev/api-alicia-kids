@@ -11,9 +11,11 @@
   "author": "benjamca@icloud.com",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.11.2",
     "pg-hstore": "^2.3.4",

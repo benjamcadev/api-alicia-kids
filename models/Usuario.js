@@ -1,6 +1,8 @@
 import {DataTypes} from 'sequelize'
 import { sequelize } from '../database/conexion.js'
 
+
+
 export const Usuario = sequelize.define('usuario',{
     id_usuario: {
         type: DataTypes.INTEGER,
@@ -19,4 +21,6 @@ export const Usuario = sequelize.define('usuario',{
     last_login_usuario: {
         type: DataTypes.DATE
     }
+
+
 })
