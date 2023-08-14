@@ -1,6 +1,7 @@
 import { Usuario } from '../models/Usuario.js'
 import { sequelize } from '../database/conexion.js'
 import bcrypt from 'bcrypt'
+import { createToken } from '../helpers/jwt.js'
 
 
 export const getUsuario = async (req,res) => {
@@ -11,15 +12,22 @@ export const getUsuario = async (req,res) => {
 
 export const loginUsuario = async (req,res) => {
 
-    const {nombre_usuario, correo_usuario, pass_usuario} = req.body
+    const {correo_usuario, pass_usuario} = req.body
+
+    //Validando parametros
+    if (!correo_usuario || !pass_usuario) {
+        return res.status(404).send({
+            status: "error",
+            message: "faltan datos por enviar"
+        })
+    }
 
     //Buscar user en la bd
-    const user = await Usuario.findOne({ where: { correo_usuario:  correo_usuario} });
+    const {dataValues: datosUser} = await Usuario.findOne({ where: { correo_usuario:  correo_usuario} });
 
-    console.log(user);
 
     //Verificar password con bcrypt
-     const pwd =  bcrypt.compareSync(pass_usuario, user.dataValues.pass_usuario);
+     const pwd =  bcrypt.compareSync(pass_usuario, datosUser.pass_usuario);
 
      if (!pwd) {
         return res.status(400).send(
@@ -28,7 +36,22 @@ export const loginUsuario = async (req,res) => {
                 message: "No te has identificado correctamente"
             }
         )
-       }
+    }
+
+    //Generamos token
+    const token = createToken(datosUser)
+
+    return res.status(200).send({
+        status: "success",
+        message: "Te has identificado correctamente",
+        user: {
+                    nombre_usuario: datosUser.nombre_usuario,
+                    correo_usuario: datosUser.correo_usuario
+                },
+        token
+    })
+
+
 }
 
 export const createUsuario = async (req,res) => {
@@ -60,7 +83,21 @@ export const createUsuario = async (req,res) => {
 
    
 
-    res.send(newUsuario.dataValues)
+    if (!newUsuario) {
+        return res.status(400).json(
+            {
+                message: "Hubo un error al crear usuario nuevo",
+                status: "error"
+            }
+        )
+    }
+
+    // Borramos las pass y el id usuario
+    delete newUsuario.dataValues.pass_usuario
+    delete newUsuario.dataValues.id_usuario
+   
+
+    res.status(200).send(newUsuario.dataValues)
 }
 
 // const getDateTime = () => {

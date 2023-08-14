@@ -3,9 +3,11 @@ import jwt from 'jsonwebtoken'
 //Clave secreta
 const secret = process.env.SECRET_KEY_JWT;
 
-const token = (user) => {
+export const createToken = (datosUser) => {
 
-    jwt.sign({id: user.dataValues.id_usuario})
+    return jwt.sign({id: datosUser.id_usuario}, secret,{
+        expiresIn: '1h'
+    })
 }
 
 
