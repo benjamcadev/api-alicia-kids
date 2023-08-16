@@ -3,6 +3,31 @@ import { sequelize } from '../database/conexion.js'
 import bcrypt from 'bcrypt'
 import { createToken } from '../helpers/jwt.js'
 
+export const getDatosCorreo = async (req,res) => {
+    const { correo_usuario, nombre_usuario } = req.body
+    const {dataValues: datosUser} = await Usuario.findOne({ where: { correo_usuario:  correo_usuario} })
+    
+    if(datosUser){
+        // Si el correo existe actualizamos nombre
+        try {
+            const resultado = await Usuario.update(
+                { nombre_usuario: nombre_usuario },
+                { where: {correo_usuario: correo_usuario}}
+                )
+            if(resultado){
+                return res.send(resultado)
+            }
+        }catch(error){
+            return res.status(400).send(
+            {
+                status: "error",
+                message: "Hubo un problema al actualizar nombre del correo"
+            })
+        }
+        
+    }
+    return res.send(datosUser)
+}
 
 export const getUsuario = async (req,res) => {
     const usuarios = await Usuario.findAll()
