@@ -50,6 +50,7 @@ export const loginUsuario = async (req,res) => {
     //Buscar user en la bd
     const {dataValues: datosUser} = await Usuario.findOne({ where: { correo_usuario:  correo_usuario} });
 
+    if(datosUser){
 
     //Verificar password con bcrypt
      const pwd =  bcrypt.compareSync(pass_usuario, datosUser.pass_usuario);
@@ -75,6 +76,11 @@ export const loginUsuario = async (req,res) => {
                 },
         token
     })
+    }else{
+        return res.status(404).send({
+            status: "error",
+            message: "No se encuentra usuario"
+        })
 
 
 }
