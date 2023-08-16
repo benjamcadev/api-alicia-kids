@@ -11,6 +11,7 @@ export const Reserva = sequelize.define('reserva',{
     },
     numero_reserva: {
         type: DataTypes.INTEGER
+    
     },
     fecha_inicio_reserva: {
         type: DataTypes.DATE
