@@ -4,6 +4,8 @@ import { sequelize } from '../database/conexion.js'
 
 export const createReserva = async (req,res) => {
 
+
+
 //Rescatar campos de query, se recibe un array de objetos, cada objeto reserva a un juego.
     const { reservas, cliente } = req.body
 
@@ -44,7 +46,9 @@ export const createReserva = async (req,res) => {
                     fecha_inicio_reserva: reserva.fecha_inicio_reserva,
                     fecha_termino_reserva: reserva.fecha_termino_reserva,
                     total_reserva: reserva.total_reserva,
-                    estado_reserva: true
+                    estado_reserva: true,
+                    fk_juego: reserva.fk_juego,
+                    fk_cliente: nuevoCliente.dataValues.id_cliente
                 })
             })
             )
