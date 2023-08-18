@@ -1,12 +1,13 @@
 import { Cliente } from '../models/Cliente.js'
-import { sequelize } from '../database/conexion.js'
+
 
 export const updateDatosCliente = async (req,res) => {
 
     const { correo_cliente, nombre_cliente } = req.body
-    const {dataValues: datosCliente} = await Cliente.findOne({ where: { correo_cliente:  correo_cliente} })
+    const respuesta = await Cliente.findOne({ where: { correo_cliente:  correo_cliente} })
+
     
-    if(datosCliente){
+    if(respuesta){
         // Si el correo existe actualizamos nombre
         try {
             const resultado = await Cliente.update(
@@ -14,7 +15,12 @@ export const updateDatosCliente = async (req,res) => {
                 { where: {correo_cliente: correo_cliente}}
                 )
             if(resultado){
-                return res.send(resultado)
+                return res.json({
+                    ...respuesta.dataValues,
+                    status: "success",
+                    message: "Actualizado",
+                    upgrade: true
+                })
             }
         }catch(error){
             return res.status(400).send(
@@ -25,7 +31,11 @@ export const updateDatosCliente = async (req,res) => {
         }
         
     }
-    return res.send(datosCliente)
+    return res.json({
+        status: "success",
+        message: "No registra",
+        upgrade: false
+    })
 }
 
 export const getCliente = (req,res) => {

@@ -1,11 +1,12 @@
 import { Reserva } from '../models/Reserva.js'
 import { Cliente } from '../models/Cliente.js'
 import { sequelize } from '../database/conexion.js'
+import { Op } from 'sequelize'
+import { convertTZ } from '../helpers/convertTZ.js'
+
+
 
 export const createReserva = async (req,res) => {
-
-
-
 //Rescatar campos de query, se recibe un array de objetos, cada objeto reserva a un juego.
     const { reservas, cliente } = req.body
 
@@ -13,12 +14,18 @@ export const createReserva = async (req,res) => {
     let nuevoCliente;
 
     try {
+        //Verificar si existe cliente
+        const respuesta = await Cliente.findOne({ where: { correo_cliente:  cliente.correo_cliente} })
 
-        nuevoCliente = await Cliente.create({
-        nombre_cliente: cliente.nombre_cliente,
-        correo_cliente: cliente.correo_cliente
-        })
-        
+        if (!respuesta) {
+            nuevoCliente = await Cliente.create({
+                nombre_cliente: cliente.nombre_cliente,
+                correo_cliente: cliente.correo_cliente
+            })
+        }else{
+            nuevoCliente = respuesta.dataValues
+        }
+      
     } catch (error) {
         return res.status(400).json(
             {
@@ -48,7 +55,7 @@ export const createReserva = async (req,res) => {
                     total_reserva: reserva.total_reserva,
                     estado_reserva: true,
                     fk_juego: reserva.fk_juego,
-                    fk_cliente: nuevoCliente.dataValues.id_cliente
+                    fk_cliente: nuevoCliente.id_cliente
                 })
             })
             )
@@ -81,22 +88,33 @@ export const createReserva = async (req,res) => {
             {
                 message: "Error al registrar la reserva",
                 status: "error",
-                details: error
+                details: error.message
             }
         )
     }
 
+}
 
+export const getReservaDate= async (req,res) => {
+    //Enviar las reservas hechas el mes pedido
+    const { date } = req.body
 
+    if (date) {
+        const reservas = await Reserva.findAll({
+            where: { 'fecha_inicio_reserva': {[Op.between]: [`${date} 00:00:00`,`${date} 23:59:59` ]} }
+        })
 
+        //Actualizamos la zona horaria de las fecha, ya que al parecer tiene problema el modulo pg, devuelve fechas en UTC
+        const reservasTZ = convertTZ(reservas)
 
-//Crear nueva reserva
-// const newReserva = await Reserva.create({
-//     numero_reserva: numeroUltimaReserva + 1,
-//     correo_usuario,
-//     pass_usuario,
-//     last_login_usuario: sequelize.literal('NOW()')
-// })
+        res.json(reservasTZ)
+
+    }else{
+        res.status(400).send('Error al traer reservas por mes')
+    }
+    
+
+   
 }
 
 

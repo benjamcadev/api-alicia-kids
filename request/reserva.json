@@ -1,0 +1,22 @@
+{
+    "cliente": {
+        "nombre_cliente": "Benjamin Cortes",
+        "correo_cliente": "benjamca@hotmail.com"
+    },
+   "reservas": [
+        {
+            "fecha_inicio_reserva": "2023-08-16 11:18:53",
+            "fecha_termino_reserva": "2023-08-16 12:18:53",
+            "total_reserva": 30000,
+            "estado_reserva": true,
+            "fk_juego": 4
+        },
+         {
+            "fecha_inicio_reserva": "2023-08-16 11:18:53",
+            "fecha_termino_reserva": "2023-08-16 12:18:53",
+            "total_reserva": 30000,
+            "estado_reserva": true,
+             "fk_juego": 7
+        }
+    ]
+}
