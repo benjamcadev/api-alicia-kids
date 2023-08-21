@@ -10,6 +10,36 @@ export const createReserva = async (req,res) => {
 //Rescatar campos de query, se recibe un array de objetos, cada objeto reserva a un juego.
     const { reservas, cliente } = req.body
 
+    
+
+// Verificar que no hya otra reserva para la fecha
+
+    if (reservas) {  
+         
+        const shortDateInicio = reservas[0].fecha_inicio_reserva.split(" ")
+
+       
+        
+        const reserva = await Reserva.findAll({
+            where: {  
+                fecha_inicio_reserva:{
+                    [Op.between]: [
+                        `${shortDateInicio[0]} 00:00:00` ,
+                        `${shortDateInicio[0]} 23:59:00`
+                    ]         
+                },
+                fk_juego: { [Op.eq]: 7}
+                       
+               
+            }
+        })
+
+        return res.send(reserva)
+
+        
+    }
+     
+
 // Registrar cliente
     let nuevoCliente;
 
