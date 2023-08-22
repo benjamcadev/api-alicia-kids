@@ -34,11 +34,10 @@ export const createReserva = async (req,res) => {
                 }
             })
 
-            console.log(reservaExistente);
+           
             
 
             if (reservaExistente) {
-                console.log("GUARDANDO RESERVA");
                 reservasExistentes = [
                     ...reservasExistentes,
                     reservaExistente
