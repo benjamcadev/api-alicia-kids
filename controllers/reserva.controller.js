@@ -47,10 +47,23 @@ export const createReserva = async (req,res) => {
          }
 
          
-        return res.send(reservasExistentes)
+         return res.status(400).json(
+            {
+                message: "Error al reservar",
+                status: "error"
+              
+            }
+        )
   
     }else{
-
+        return res.status(200).json(
+            {
+                message: "Se puede reservar",
+                status: "success"
+              
+            }
+        )
+        
     }
      
 
