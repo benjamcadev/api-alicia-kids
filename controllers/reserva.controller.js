@@ -10,33 +10,47 @@ export const createReserva = async (req,res) => {
 //Rescatar campos de query, se recibe un array de objetos, cada objeto reserva a un juego.
     const { reservas, cliente } = req.body
 
-    
 
 // Verificar que no hya otra reserva para la fecha
-
     if (reservas) {  
-         
-        const shortDateInicio = reservas[0].fecha_inicio_reserva.split(" ")
 
-       
-        
-        const reserva = await Reserva.findAll({
-            where: {  
-                fecha_inicio_reserva:{
-                    [Op.between]: [
-                        `${shortDateInicio[0]} 00:00:00` ,
-                        `${shortDateInicio[0]} 23:59:00`
-                    ]         
-                },
-                fk_juego: { [Op.eq]: 7}
-                       
-               
+        let reservasExistentes = []
+
+         for (const reserva of reservas) {
+
+            console.log(reserva);
+
+            const shortDateInicio = reserva.fecha_inicio_reserva.split(" ")
+           
+            const reservaExistente = await Reserva.findAll({
+                where: {  
+                    fecha_inicio_reserva:{
+                        [Op.between]: [
+                            `${shortDateInicio[0]} 00:00:00` ,
+                            `${shortDateInicio[0]} 23:59:00`
+                        ]         
+                    },
+                    fk_juego: { [Op.eq]: reserva.fk_juego}
+                }
+            })
+
+            console.log(reservaExistente);
+            
+
+            if (reservaExistente) {
+                console.log("GUARDANDO RESERVA");
+                reservasExistentes = [
+                    ...reservasExistentes,
+                    reservaExistente
+                ]
             }
-        })
+         }
 
-        return res.send(reserva)
+         
+        return res.send(reservasExistentes)
+  
+    }else{
 
-        
     }
      
 
