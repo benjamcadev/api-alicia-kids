@@ -24,6 +24,9 @@ export const Reserva = sequelize.define('reserva',{
     },
     estado_reserva: {
         type: DataTypes.BOOLEAN
+    },
+    direccion_reserva: {
+        type: DataTypes.STRING
     }
 
 })

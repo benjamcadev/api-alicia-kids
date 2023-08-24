@@ -5,6 +5,13 @@ const subtractHours = (date, hours) => {
     return date;
   }
 
+export const convertTZOneDate = (fecha) => {
+  const fechaUtcDate = new Date(fecha)
+  const fechaSantiago = subtractHours(fechaUtcDate, 4)
+  return fechaSantiago
+
+} 
+
 export const convertTZ = (reservas) => {
     reservas.forEach((element, index) => {
         //console.log(element.dataValues);

@@ -9,6 +9,7 @@
             "fecha_termino_reserva": "2023-08-16 12:18:53",
             "total_reserva": 30000,
             "estado_reserva": true,
+            "direccion_reserva": "balmaceda 1404",
             "fk_juego": 4
         },
          {
@@ -16,6 +17,7 @@
             "fecha_termino_reserva": "2023-08-16 12:18:53",
             "total_reserva": 30000,
             "estado_reserva": true,
+            "direccion_reserva": "balmaceda 1404",
              "fk_juego": 7
         }
     ]
