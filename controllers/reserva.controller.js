@@ -4,6 +4,7 @@ import { sequelize } from '../database/conexion.js'
 import { Op } from 'sequelize'
 import { convertTZ, convertTZOneDate } from '../helpers/convertTZ.js'
 import { verifyClient } from '../helpers/verifyClient.js'
+import { sendEmail } from '../helpers/sendEmail.js'
 
 
 
@@ -102,6 +103,48 @@ export const createReserva = async (req, res) => {
                     juegos: juegos
                 }
                 
+                //Enviar correo
+
+                //Transformando fechas para el correo
+                const dateInicio = new Date(reservaNueva[0].fecha_inicio_reserva);
+                let dateInicioString = dateInicio.toLocaleString();
+
+                const dateTermino = new Date(reservaNueva[0].fecha_termino_reserva);
+                let dateTerminoString = dateTermino.toLocaleString();
+
+                const mailReserva = {
+                    from: '"Alicia Kids" <alicia.kids.juegos@gmail.com>',
+                    to: cliente.correo_cliente,
+                    cc: 'benjamca@icloud.com',
+                    subject: 'Reserva de juegos ✅ - Alicia Kids',
+                    text: 'Texto del correo',
+                    html: `<h1>FELICIDADES 🎉🎉</h1> <h2>${reservaFinal.cliente.nombre}, TU RESERVA SE HA HECHO CON EXITO ! ✅</h2>`+
+                    '<br>'+
+                    '<h3>Datos de la Reserva:</h3>'+
+                    '<br>'+
+                    `<p>Tu numero de reserva es: <b>${reservaFinal.numero_reserva}</b></p>`+
+                    `<p>La fiesta empieza: <b>${dateInicioString}</b></p>`+
+                    `<p>Y termina: <b>${dateTerminoString}</b></p>`+
+                    `<p>El precio total: <b>$${reservaFinal.total_reserva}</b></p>`+
+                    `<p>El lugar de la fiesta es: <b>${reservaFinal.direccion_reserva}</b></p>`+
+                    '<br>'+
+                    `<h3>NOS VEMOS PRONTO PARA CELEBRAR CON ALICIA KIDS !!! 🥳🎈</h3>`
+                  }
+
+                
+
+                try {
+                    const respuestaCorreo = await sendEmail(mailReserva)
+                    //console.log(respuestaCorreo)
+
+                } catch (error) {
+                    return res.status(400).json({
+                        message: "Error al enviar correo de reserva",
+                        status: "error",
+                        details: error.message
+                    })
+                }  
+
 
                 return res.status(200).json({
                     reservaFinal

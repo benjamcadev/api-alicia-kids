@@ -1,6 +1,5 @@
 import  Sequelize  from 'sequelize'
 import 'dotenv/config'
-
 import pg from 'pg'
 const { types } = pg
 
