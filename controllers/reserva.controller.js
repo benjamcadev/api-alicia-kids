@@ -6,7 +6,9 @@ import { convertTZ, convertTZOneDate } from '../helpers/convertTZ.js'
 import { verifyClient } from '../helpers/verifyClient.js'
 import { sendEmail, emailReserva } from '../helpers/email.js'
 
-
+export const deleteReserva = async (req, res) => {
+    
+}
 
 export const createReserva = async (req, res) => {
     //Rescatar campos de query, se recibe un array de objetos, cada objeto reserva a un juego.
