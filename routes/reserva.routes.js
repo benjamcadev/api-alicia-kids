@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/reservas', getReservaDate)
 router.post('/reservas/create',createReserva)
-router.delete('/reservas/remove/:id',deleteReserva)
+router.delete('/reservas/delete/:id',deleteReserva)
 
 
 export default router
