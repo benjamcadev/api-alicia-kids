@@ -7,7 +7,44 @@ import { verifyClient } from '../helpers/verifyClient.js'
 import { sendEmail, emailReserva } from '../helpers/email.js'
 
 export const deleteReserva = async (req, res) => {
-    
+
+    const numero_reserva  = req.params.id
+
+    if (numero_reserva) {
+        //Hacer update en el flag estado_reserva
+       const resultadoUpdate = await Reserva.update({ estado_reserva: false }, {
+            where: {
+              numero_reserva: numero_reserva,
+              estado_reserva: true
+            }
+          })
+        
+        console.log(resultadoUpdate) 
+
+        if (resultadoUpdate != 0) {
+            return res.status(200).json(
+                {
+                    message: "Reserva cancelada con exito",
+                    status: "success"
+                }
+            )
+        }else{
+            return res.status(400).json(
+                {
+                    message: "No existe reserva",
+                    status: "error"
+                }
+            )
+        }
+  
+    }else{
+        return res.status(400).json(
+            {
+                message: "Faltan datos para eliminar la reserva",
+                status: "error"
+            }
+        )
+    }
 }
 
 export const createReserva = async (req, res) => {
@@ -31,7 +68,12 @@ export const createReserva = async (req, res) => {
                             `${shortDateInicio[0]} 23:59:00`
                         ]
                     },
-                    fk_juego: { [Op.eq]: reserva.fk_juego }
+                    fk_juego: { 
+                        [Op.eq]: reserva.fk_juego 
+                    },
+                    estado_reserva: {
+                        [Op.eq]: true
+                    }
                 }
             })
 

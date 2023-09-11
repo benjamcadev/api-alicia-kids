@@ -38,7 +38,7 @@ export const emailReserva = (correoCliente, clienteNombre, numeroReserva, fechaI
       '<style>' +
       '.card {' +
       'box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);' +
-      'max-width: 500px;' +
+      'max-width: 450px;' +
       'margin: auto;' +
       'text-align: center;' +
       'font-family: arial;' +
@@ -72,7 +72,7 @@ export const emailReserva = (correoCliente, clienteNombre, numeroReserva, fechaI
       '</head>' +
       '<body>' +
       '<div class="card">' +
-      `<img src="cid:cid_imagen_correo_reserva" alt="Cumple" style="width:100%">` +
+      `<img src="cid:cid_imagen_correo_reserva" alt="Cumple" style="width:95%">` +
       '<h1>FELICIDADES 🎉🎉</h1>' +
       `<p>${clienteNombre}, TU RESERVA SE HA HECHO CON EXITO ! ✅</p>` +
       '<p class="title">Datos de la reserva:</p>' +
