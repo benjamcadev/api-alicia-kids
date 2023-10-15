@@ -4,7 +4,7 @@ import { createReserva,  getReservaDate , deleteReserva} from '../controllers/re
 
 const router = Router()
 
-router.get('/reservas', getReservaDate)
+router.post('/reservas', getReservaDate)
 router.post('/reservas/create',createReserva)
 router.delete('/reservas/delete/:id',deleteReserva)
 
