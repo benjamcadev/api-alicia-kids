@@ -212,7 +212,13 @@ export const getReservaDate = async (req, res) => {
         //Actualizamos la zona horaria de las fecha, ya que al parecer tiene problema el modulo pg, devuelve fechas en UTC
         const reservasTZ = convertTZ(reservas)
 
-        res.json(reservasTZ)
+        res.set({
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials" : "true" 
+        });
+
+        res.status(200).json(reservasTZ)
 
     } else {
         res.status(400).send('Error al traer reservas por mes')
