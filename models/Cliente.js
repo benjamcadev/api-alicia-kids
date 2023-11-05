@@ -13,5 +13,8 @@ export const Cliente = sequelize.define('cliente',{
     },
     correo_cliente: {
         type: DataTypes.STRING
+    },
+    telefono_cliente: {
+        type: DataTypes.STRING
     }
 })

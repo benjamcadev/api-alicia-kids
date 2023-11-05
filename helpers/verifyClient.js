@@ -12,7 +12,8 @@ export const verifyClient = async (cliente) => {
         if (!respuesta) {
             return nuevoCliente = await Cliente.create({
                 nombre_cliente: cliente.nombre_cliente,
-                correo_cliente: cliente.correo_cliente
+                correo_cliente: cliente.correo_cliente,
+                telefono_cliente: cliente.telefono_cliente
             })
         } else {
             return nuevoCliente = respuesta.dataValues

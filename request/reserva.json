@@ -1,7 +1,8 @@
 {
     "cliente": {
         "nombre_cliente": "Benjamin Cortes",
-        "correo_cliente": "benjamca@hotmail.com"
+        "correo_cliente": "benjamca@hotmail.com",
+        "telefono_cliente": "+569 65326202"
     },
    "reservas": [
         {
