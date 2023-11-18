@@ -177,7 +177,8 @@ export const createReserva = async (req, res) => {
                 }  
 
                 return res.status(200).json({
-                    reservaFinal
+                    status: "success",
+                    reserva: reservaFinal
                 })
 
             } catch (error) {
