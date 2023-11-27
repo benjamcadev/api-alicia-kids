@@ -29,7 +29,7 @@ export const emailReserva = (correoCliente, clienteNombre, numeroReserva, fechaI
   const mailReserva = {
     from: '"Alicia Kids" <alicia.kids.juegos@gmail.com>',
     to: correoCliente,
-    cc: 'benjamca@hotmail.com',
+    cc: 'alicia.kids.juegos@gmail.com',
     subject: 'Reserva de juegos ✅ - Alicia Kids',
     text: 'Texto del correo',
     html: '<html>' +
