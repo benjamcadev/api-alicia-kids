@@ -5,15 +5,15 @@ import { createToken } from '../helpers/jwt.js'
 
 
 
-export const getUsuario = async (req,res) => {
+export const getUsuario = async (req, res) => {
     const usuarios = await Usuario.findAll()
 
     res.json(usuarios)
 }
 
-export const loginUsuario = async (req,res) => {
+export const loginUsuario = async (req, res) => {
 
-    const {correo_usuario, pass_usuario} = req.body
+    const { correo_usuario, pass_usuario } = req.body
 
     //Validando parametros
     if (!correo_usuario || !pass_usuario) {
@@ -24,56 +24,58 @@ export const loginUsuario = async (req,res) => {
     }
 
     //Buscar user en la bd
-    const {dataValues: datosUser} = await Usuario.findOne({ where: { correo_usuario:  correo_usuario} });
+    const queryUser = await Usuario.findOne({ where: { correo_usuario: correo_usuario } });
 
-    if(datosUser){
+    if (queryUser) {
 
-    //Verificar password con bcrypt
-     const pwd =  bcrypt.compareSync(pass_usuario, datosUser.pass_usuario);
+        const { dataValues: datosUser } = queryUser
 
-     if (!pwd) {
-        return res.status(400).send(
-            {
-                status: "error",
-                message: "No te has identificado correctamente"
-            }
-        )
-    }
+        //Verificar password con bcrypt
+        const pwd = bcrypt.compareSync(pass_usuario, datosUser.pass_usuario);
 
-    //Generamos token
-    const token = createToken(datosUser)
+        if (!pwd) {
+            return res.status(400).send(
+                {
+                    status: "error",
+                    message: "No te has identificado correctamente"
+                }
+            )
+        }
 
-    return res.status(200).send({
-        status: "success",
-        message: "Te has identificado correctamente",
-        user: {
-                    nombre_usuario: datosUser.nombre_usuario,
-                    correo_usuario: datosUser.correo_usuario
-                },
-        token
-    })
-    }else{
+        //Generamos token
+        const token = createToken(datosUser)
+
+        return res.status(200).send({
+            status: "success",
+            message: "Te has identificado correctamente",
+            user: {
+                nombre_usuario: datosUser.nombre_usuario,
+                correo_usuario: datosUser.correo_usuario
+            },
+            token
+        })
+    } else {
         return res.status(404).send({
             status: "error",
             message: "No se encuentra usuario"
         })
 
 
-}
+    }
 }
 
-export const createUsuario = async (req,res) => {
+export const createUsuario = async (req, res) => {
 
     //Hash password
     const salt = await bcrypt.genSalt(10)
     req.body.pass_usuario = await bcrypt.hash(req.body.pass_usuario, salt)
 
-    const {nombre_usuario, correo_usuario, pass_usuario} = req.body
+    const { nombre_usuario, correo_usuario, pass_usuario } = req.body
 
-     //Comprobar que me llegan bien y validarlos
-     if(!nombre_usuario || !correo_usuario || !pass_usuario){
+    //Comprobar que me llegan bien y validarlos
+    if (!nombre_usuario || !correo_usuario || !pass_usuario) {
         console.log("VALIDACION INCORRECTA");
-        
+
         return res.status(400).json(
             {
                 message: "Faltan datos por enviar",
@@ -89,7 +91,7 @@ export const createUsuario = async (req,res) => {
         last_login_usuario: sequelize.literal('NOW()')
     })
 
-   
+
 
     if (!newUsuario) {
         return res.status(400).json(
@@ -103,7 +105,7 @@ export const createUsuario = async (req,res) => {
     // Borramos las pass y el id usuario
     delete newUsuario.dataValues.pass_usuario
     delete newUsuario.dataValues.id_usuario
-   
+
 
     res.status(200).send(newUsuario.dataValues)
 }
