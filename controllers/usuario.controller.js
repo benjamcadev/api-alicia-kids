@@ -2,6 +2,7 @@ import { Usuario } from '../models/Usuario.js'
 import { sequelize } from '../database/conexion.js'
 import bcrypt from 'bcrypt'
 import { createToken } from '../helpers/jwt.js'
+import { serialize } from 'cookie'
 
 
 
@@ -45,6 +46,10 @@ export const loginUsuario = async (req, res) => {
         //Generamos token
         const token = createToken(datosUser)
 
+        const serializedToken = serialize('loginToken', token)
+
+        res.setHeader('Set-Cookie', serializedToken)
+
         return res.status(200).send({
             status: "success",
             message: "Te has identificado correctamente",
@@ -52,7 +57,7 @@ export const loginUsuario = async (req, res) => {
                 nombre_usuario: datosUser.nombre_usuario,
                 correo_usuario: datosUser.correo_usuario
             },
-            token
+            
         })
     } else {
         return res.status(404).send({
