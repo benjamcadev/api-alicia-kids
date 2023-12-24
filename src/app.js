@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import usuarioRoutes from '../routes/usuario.routes.js'
 import reservaRoutes from '../routes/reserva.routes.js'
 import clienteRoutes from '../routes/cliente.routes.js'
@@ -24,6 +25,7 @@ const corsOptions = {
 app.use(cors({credentials: true, origin: true}))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use(cookieParser())
 
 app.use(usuarioRoutes)
 app.use(reservaRoutes)

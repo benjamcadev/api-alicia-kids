@@ -1,7 +1,7 @@
 import { Usuario } from '../models/Usuario.js'
 import { sequelize } from '../database/conexion.js'
 import bcrypt from 'bcrypt'
-import { createToken } from '../helpers/jwt.js'
+import { createToken, verifyToken } from '../helpers/jwt.js'
 import { serialize } from 'cookie'
 
 
@@ -48,7 +48,7 @@ export const loginUsuario = async (req, res) => {
 
         const serializedToken = serialize('loginToken', token)
 
-        
+
         res.header("Access-Control-Allow-Origin", "http://localhost:3000");
         res.header('Access-Control-Allow-Credentials', true);
 
@@ -61,7 +61,7 @@ export const loginUsuario = async (req, res) => {
                 nombre_usuario: datosUser.nombre_usuario,
                 correo_usuario: datosUser.correo_usuario
             },
-            
+
         })
     } else {
         return res.status(404).send({
@@ -71,6 +71,42 @@ export const loginUsuario = async (req, res) => {
 
 
     }
+}
+
+export const getProfileLogged = async (req, res) => {
+
+    if (req.cookies.loginToken) {
+        const { loginToken } = req.cookies
+
+        res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+        res.header('Access-Control-Allow-Credentials', true);
+
+        
+
+        try {
+            const user = await verifyToken(loginToken) 
+
+            return res.status(200).send({
+                status: "success",
+                correo_usuario: user.correo,
+                nombre_usuario: user.nombre
+            })
+        } catch (error) {
+            return res.status(401).json({
+                status: "error",
+                message: "Token invalido jwt"
+            })
+        }
+
+       
+    }else{
+        return res.status(404).send({
+            status: "error",
+            message: "Usuario no logeado"
+        }) 
+    }
+
+
 }
 
 export const createUsuario = async (req, res) => {
