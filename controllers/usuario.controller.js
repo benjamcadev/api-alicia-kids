@@ -73,6 +73,46 @@ export const loginUsuario = async (req, res) => {
     }
 }
 
+export const logoutUsuario = async (req, res) => {
+
+    if (req.cookies.loginToken) {
+
+        try {
+            const { loginToken } = req.cookies
+            const user = await verifyToken(loginToken)
+            const serializedToken = serialize('loginToken', null, {
+                maxAge: 0,
+            })
+
+            res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.header('Access-Control-Allow-Credentials', true);
+    
+            res.setHeader('Set-Cookie', serializedToken)
+            
+            return res.status(200).send({
+                status: "success",
+                message: "Logout Correcto"
+            })
+
+        } catch (error) {
+            
+            return res.status(401).json({
+                status: "error",
+                message: "Error Logout Token invalido jwt",
+                error
+            })
+        }
+
+       
+
+    } else {
+        return res.status(401).json({
+            status: "error",
+            message: "Token no existe jwt"
+        })
+    }
+}
+
 export const getProfileLogged = async (req, res) => {
 
     if (req.cookies.loginToken) {
@@ -81,10 +121,10 @@ export const getProfileLogged = async (req, res) => {
         res.header("Access-Control-Allow-Origin", "http://localhost:3000");
         res.header('Access-Control-Allow-Credentials', true);
 
-        
+
 
         try {
-            const user = await verifyToken(loginToken) 
+            const user = await verifyToken(loginToken)
 
             return res.status(200).send({
                 status: "success",
@@ -98,12 +138,12 @@ export const getProfileLogged = async (req, res) => {
             })
         }
 
-       
-    }else{
-        return res.status(404).send({
+
+    } else {
+        return res.status(401).send({
             status: "error",
             message: "Usuario no logeado"
-        }) 
+        })
     }
 
 
