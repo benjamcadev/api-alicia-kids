@@ -46,7 +46,10 @@ export const loginUsuario = async (req, res) => {
         //Generamos token
         const token = createToken(datosUser)
 
-        const serializedToken = serialize('loginToken', token)
+        const serializedToken = serialize('loginToken', token,{
+            secure: true,
+            sameSite: "none"
+        })
 
 
         res.header("Access-Control-Allow-Origin",  process.env.HOST_FRONTEND);
