@@ -9,7 +9,7 @@ import juegoRoutes from '../routes/juego.routes.js'
 const app = express()
 
 // SI QUIERO LIMITAR LOS DOMINIOS QUE HACEN PETICIONES OCUPAMOS LAS cosrOptions en cors()
-const whitelist = ['http://localhost:3000', 'http://localhost:3900'];
+const whitelist = ['http://localhost:3000','http://localhost:3900'];
 const corsOptions = {
   credentials: true, // This is important.
   origin: (origin, callback) => {

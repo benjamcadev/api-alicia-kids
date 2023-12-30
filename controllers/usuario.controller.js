@@ -49,7 +49,7 @@ export const loginUsuario = async (req, res) => {
         const serializedToken = serialize('loginToken', token)
 
 
-        res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+        res.header("Access-Control-Allow-Origin",  process.env.HOST_FRONTEND);
         res.header('Access-Control-Allow-Credentials', true);
 
         res.setHeader('Set-Cookie', serializedToken)
@@ -84,7 +84,7 @@ export const logoutUsuario = async (req, res) => {
                 maxAge: 0,
             })
 
-            res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.header("Access-Control-Allow-Origin", process.env.HOST_FRONTEND);
             res.header('Access-Control-Allow-Credentials', true);
     
             res.setHeader('Set-Cookie', serializedToken)
@@ -118,7 +118,7 @@ export const getProfileLogged = async (req, res) => {
     if (req.cookies.loginToken) {
         const { loginToken } = req.cookies
 
-        res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+        res.header("Access-Control-Allow-Origin",  process.env.HOST_FRONTEND);
         res.header('Access-Control-Allow-Credentials', true);
 
 
