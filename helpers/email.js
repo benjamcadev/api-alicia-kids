@@ -48,7 +48,7 @@ export const emailReserva = (correoCliente, clienteNombre, numeroReserva, fechaI
       'font-size: 18px;' +
       'font-weight: bold;' +
       '}' +
-      'button {' +
+      'a {' +
       'border: none;' +
       'outline: 0;' +
       'display: inline-block;' +
@@ -59,13 +59,9 @@ export const emailReserva = (correoCliente, clienteNombre, numeroReserva, fechaI
       'cursor: pointer;' +
       'width: 100%;' +
       'font-size: 18px;' +
-      '}' +
-      'a {' +
       'text-decoration: none;' +
-      'font-size: 22px;' +
-      'color: black;' +
       '}' +
-      'button:hover, a:hover {' +
+      'a:hover {' +
       'opacity: 0.7;' +
       '}' +
       '</style>' +
@@ -82,7 +78,7 @@ export const emailReserva = (correoCliente, clienteNombre, numeroReserva, fechaI
       `<p>El precio total: <b>$${totalReserva}</b></p>` +
       `<p>El lugar de la fiesta es: <b>${direccionReserva}</b></p>` +
       '<h3>NOS VEMOS PRONTO PARA CELEBRAR CON ALICIA KIDS !!! 🥳🎈</h3>' +
-      '<p><button>Cancelar Reserva</button></p>' +
+      `<p><a href="${process.env.HOST_FRONTEND}/cancelar?id=${numeroReserva}&email=${correoCliente}">Cancelar Reserva</a></p>` +
       '</div>' +
       '</body>' +
       '</html>',
