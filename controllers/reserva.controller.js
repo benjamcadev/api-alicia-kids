@@ -153,7 +153,7 @@ export const createReserva = async (req, res) => {
                 let dateInicioString = dateInicio.toLocaleString('es-CL', { timeZone: 'UTC' });
           
                 const dateTermino = new Date(reservaNueva[0].fecha_termino_reserva);
-                let dateTerminoString = dateTermino.toLocaleString();
+                let dateTerminoString = dateTermino.toLocaleString('es-CL', { timeZone: 'UTC' });
 
                 const mail = emailReserva(
                     cliente.correo_cliente,
