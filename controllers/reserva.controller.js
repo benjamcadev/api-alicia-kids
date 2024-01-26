@@ -19,7 +19,6 @@ export const deleteReserva = async (req, res) => {
             }
           })
         
-        console.log(resultadoUpdate) 
 
         if (resultadoUpdate != 0) {
             return res.status(200).json(
